@@ -1,0 +1,58 @@
+version: '3.9'
+services:
+  # Serviço do Banco de Dados PostgreSQL
+  postgres-server:
+    image: postgres:15-alpine
+    container_name: postgres-server-zabbix
+    volumes:
+      -./zbx_postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=zabbix
+      - POSTGRES_USER=zabbix
+      - POSTGRES_PASSWORD=Xu7@0Nc21kU 
+    restart: unless-stopped
+    networks:
+      - zabbix-net
+
+  # Serviço do Zabbix Server
+  zabbix-server:
+    image: zabbix/zabbix-server-pgsql:latest
+    container_name: zabbix-server
+    ports:
+      - "10051:10051"
+    volumes:
+      -./zbx_alertscripts:/usr/lib/zabbix/alertscripts
+    environment:
+      - DB_SERVER_HOST=postgres-server
+      - POSTGRES_DB=zabbix
+      - POSTGRES_USER=zabbix
+      - POSTGRES_PASSWORD=Xu7@0Nc21kU
+    restart: unless-stopped
+    depends_on:
+      - postgres-server
+    networks:
+      - zabbix-net
+
+  # Serviço da Interface Web do Zabbix
+  zabbix-web:
+    image: zabbix/zabbix-web-nginx-pgsql:latest
+    container_name: zabbix-web
+    ports:
+      - "8080:8080" # <-- Acesso pela porta 8080 do seu navegador
+      - "8443:8443"
+    environment:
+      - DB_SERVER_HOST=postgres-server
+      - POSTGRES_DB=zabbix
+      - POSTGRES_USER=zabbix
+      - POSTGRES_PASSWORD=Xu7@0Nc21kU
+      - ZBX_SERVER_HOST=zabbix-server
+    restart: unless-stopped
+    depends_on:
+      - zabbix-server
+    networks:
+      - zabbix-net
+
+# Define a rede para os contêineres se comunicarem
+networks:
+  zabbix-net:
+    driver: bridge
