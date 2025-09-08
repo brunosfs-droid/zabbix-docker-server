@@ -20,7 +20,6 @@ services:
     networks:
       - zabbix-net
 
-  # Serviço da Interface Web do Zabbix (agora com MySQL)
   zabbix-web:
     image: zabbix/zabbix-web-nginx-mysql:latest
     container_name: zabbix-web
