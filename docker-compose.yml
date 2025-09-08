@@ -27,12 +27,16 @@ services:
     ports:
       - "8080:8080"
       - "8443:8443"
+     volumes:
+      - ./certs:/var/lib/zabbix/enc
     environment:
       - DB_SERVER_HOST=db-zabbix-00.mysql.database.azure.com
       - MYSQL_DATABASE=zabbix
       - MYSQL_USER=zabbixadmin
       - MYSQL_PASSWORD=Bruno@123
       - ZBX_SERVER_HOST=zabbix-server
+      - ZBX_DBTLSCONNECT=verify_ca
+      - ZBX_DBTLSCAFILE=/var/lib/zabbix/enc/BaltimoreCyberTrustRoot.crt
     restart: unless-stopped
     depends_on:
       - zabbix-server
