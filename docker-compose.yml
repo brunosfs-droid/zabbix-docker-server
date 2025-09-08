@@ -8,11 +8,14 @@ services:
       - "10051:10051"
     volumes:
       - ./zbx_alertscripts:/usr/lib/zabbix/alertscripts
+      - ./certs:/var/lib/zabbix/enc
     environment:
       - DB_SERVER_HOST=db-zabbix-00.mysql.database.azure.com
       - MYSQL_DATABASE=zabbix
       - MYSQL_USER=zabbixadmin
       - MYSQL_PASSWORD=Bruno@123
+      - ZBX_DBTLSCONNECT=verify_ca
+      - ZBX_DBTLSCAFILE=/var/lib/zabbix/enc/BaltimoreCyberTrustRoot.crt
     restart: unless-stopped
     networks:
       - zabbix-net
