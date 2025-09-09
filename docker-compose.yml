@@ -14,7 +14,7 @@ services:
       - MYSQL_USER=zabbixadmin
       - MYSQL_PASSWORD=Bruno@123
       - ZBX_DBTLSCONNECT=verify_ca
-      - ZBX_DBTLSCAFILE=/var/lib/zabbix/enc/BaltimoreCyberTrustRoot.crt
+      - ZBX_DB_TLSCAFILE=/var/lib/zabbix/enc/BaltimoreCyberTrustRoot.crt
     restart: unless-stopped
     networks:
       - zabbix-net
@@ -34,7 +34,7 @@ services:
       - MYSQL_PASSWORD=Bruno@123
       - ZBX_SERVER_HOST=zabbix-server
       - ZBX_DBTLSCONNECT=verify_ca
-      - ZBX_DBTLSCAFILE=/var/lib/zabbix/enc/BaltimoreCyberTrustRoot.crt
+      - ZBX_DB_TLSCAFILE=/var/lib/zabbix/enc/BaltimoreCyberTrustRoot.crt
     restart: unless-stopped
     depends_on:
       - zabbix-server
