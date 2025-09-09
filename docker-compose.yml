@@ -1,6 +1,5 @@
 version: '3.9'
 services:
-  # Serviço do Zabbix Server (agora com MySQL)
   zabbix-server:
     image: zabbix/zabbix-server-mysql:latest
     container_name: zabbix-server
@@ -26,7 +25,7 @@ services:
     ports:
       - "8080:8080"
       - "8443:8443"
-     volumes:
+    volumes:
       - ./certs:/var/lib/zabbix/enc
     environment:
       - DB_SERVER_HOST=db-zabbix-00.mysql.database.azure.com
@@ -42,7 +41,6 @@ services:
     networks:
       - zabbix-net
 
-# Define a rede para os contêineres se comunicarem
 networks:
   zabbix-net:
     driver: bridge
