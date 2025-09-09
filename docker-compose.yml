@@ -1,7 +1,7 @@
 version: '3.9'
 services:
   zabbix-server:
-    image: zabbix/zabbix-server-mysql:latest
+    image: zabbix/zabbix-server-mysql:alpine-6.0-latest
     container_name: zabbix-server
     ports:
       - "10051:10051"
@@ -13,7 +13,7 @@ services:
       - MYSQL_DATABASE=zabbix
       - MYSQL_USER=zabbixadmin
       - MYSQL_PASSWORD=Bruno@123
-      - ZBX_DBTLSCONNECT=verify_ca
+      - ZBX_DB_TLSCONNECT=verify_ca
       - ZBX_DB_TLSCAFILE=/var/lib/zabbix/enc/BaltimoreCyberTrustRoot.crt
     restart: unless-stopped
     networks:
@@ -33,7 +33,7 @@ services:
       - MYSQL_USER=zabbixadmin
       - MYSQL_PASSWORD=Bruno@123
       - ZBX_SERVER_HOST=zabbix-server
-      - ZBX_DBTLSCONNECT=verify_ca
+      - ZBX_DB_TLSCONNECT=verify_ca
       - ZBX_DB_TLSCAFILE=/var/lib/zabbix/enc/BaltimoreCyberTrustRoot.crt
     restart: unless-stopped
     depends_on:
